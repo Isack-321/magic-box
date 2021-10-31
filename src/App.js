@@ -1,7 +1,7 @@
 
 import './App.css';
 import Button from '@mui/material/Button';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import SingleCard from './components/SingleCard';
 
 const cardImages=[
@@ -18,16 +18,46 @@ function App() {
 const [cards,setcards]= useState([])
 
 const [turns,setTurns]= useState(0)
+
+const [choice1,setChoice1]= useState(null);
+const [choice2,setChoice2]= useState(null);
+
 const shufflecards=()=>{
 
-  const duplicate =[...cardImages, ...cardImages]
-    .sort(()=> Math.random()- 0.5)
-    .map((card)=>({...card, id: Math.random()}))
+      const duplicate =[...cardImages, ...cardImages]
+        .sort(()=> Math.random()- 0.5)
+        .map((card)=>({...card, id: Math.random()}))
 
-    setcards(duplicate)
-    setTurns(0)
+        setcards(duplicate)
+        setTurns(0)
 }
-console.log(cards,turns)
+
+  const handleChoice=(card)=>{
+    choice1 ? setChoice2(card) :setChoice1(card);
+
+  }
+
+  
+  useEffect(() => {
+        if(choice1 && choice2){
+          if (choice1.src===choice2.src){
+            console.log('matching cards...')
+            resetTurns()
+          }
+          else{
+            console.log('matching cards not found')
+            resetTurns();
+          }
+      }
+    }
+  , [choice1,choice2])
+
+  
+  const resetTurns=()=>{
+      setChoice1(null);
+      setChoice2(null);
+      setTurns((prevTurns)=>prevTurns+1)
+  }
 
   return (
     <div className="App">
@@ -38,7 +68,9 @@ console.log(cards,turns)
     <div className="card-grid">
         {cards.map(card=>(
           
-            <SingleCard key = {card.id} card={card}/>
+            <SingleCard key = {card.id} 
+            handleChoice={handleChoice}
+            card={card}/>
         ))}
         </div>
       </div>

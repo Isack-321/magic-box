@@ -1,12 +1,15 @@
 import './singlecard.css'
 
-const SingleCard=({card})=>{
+const SingleCard=({card,handleChoice})=>{
+    const handleClick=()=>{
+        handleChoice(card)
+    }
     return (
 
         <div className="card-details">
           <div>
             <img className="front" src={card.src} alt ="card front"/>
-            <img className="back" src="/img/cover.png" alt ="card back"/>
+            <img className="back" src="/img/cover.png" onClick={handleClick} alt ="card back"/>
             </div>      
         </div>
 
