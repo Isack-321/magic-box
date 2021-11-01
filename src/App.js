@@ -5,17 +5,17 @@ import { useState,useEffect } from 'react';
 import SingleCard from './components/SingleCard';
 
 const cardImages=[
-  {"src":"img/helmet-1.png"},
-  {"src":"img/potion-1.png"},
-  {"src":"img/ring-1.png"},
-  {"src":"img/scroll-1.png"},
-  {"src":"img/sword-1.png"},
-  {"src":"img/shield-1.png"}
+  {"src":"img/helmet-1.png", matched:false},
+  {"src":"img/potion-1.png", matched:false},
+  {"src":"img/ring-1.png", matched:false},
+  {"src":"img/scroll-1.png", matched:false},
+  {"src":"img/sword-1.png", matched:false},
+  {"src":"img/shield-1.png", matched:false}
 
 ]
 function App() {
 
-const [cards,setcards]= useState([])
+const [cards,setCards]= useState([])
 
 const [turns,setTurns]= useState(0)
 
@@ -28,7 +28,7 @@ const shufflecards=()=>{
         .sort(()=> Math.random()- 0.5)
         .map((card)=>({...card, id: Math.random()}))
 
-        setcards(duplicate)
+        setCards(duplicate)
         setTurns(0)
 }
 
@@ -41,11 +41,23 @@ const shufflecards=()=>{
   useEffect(() => {
         if(choice1 && choice2){
           if (choice1.src===choice2.src){
-            console.log('matching cards...')
+            setCards(prevCard=>{
+              return prevCard.map(card=>{
+
+                if(card.src===choice1.src){
+                  return {...card, matched:true}
+                }
+                else
+                {
+                  return card
+                }
+              })
+
+            })
             resetTurns()
           }
           else{
-            console.log('matching cards not found')
+          
             resetTurns();
           }
       }
