@@ -40,9 +40,11 @@ const shufflecards=()=>{
   
   useEffect(() => {
         if(choice1 && choice2){
+
           if (choice1.src===choice2.src){
-            setCards(prevCard=>{
-              return prevCard.map(card=>{
+            setCards(prevCards=>{
+
+              return prevCards.map(card=>{
 
                 if(card.src===choice1.src){
                   return {...card, matched:true}
@@ -58,13 +60,14 @@ const shufflecards=()=>{
           }
           else{
           
-            resetTurns();
+            setTimeout(()=>resetTurns(),1000);
           }
       }
     }
   , [choice1,choice2])
 
-  
+  console.log(cards)
+
   const resetTurns=()=>{
       setChoice1(null);
       setChoice2(null);
@@ -82,7 +85,9 @@ const shufflecards=()=>{
           
             <SingleCard key = {card.id} 
             handleChoice={handleChoice}
-            card={card}/>
+            card={card}
+            flipped={card === choice1 || card===choice2 || card.matched}
+            />
         ))}
         </div>
       </div>
